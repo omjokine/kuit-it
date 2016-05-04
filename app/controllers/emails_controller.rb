@@ -39,4 +39,30 @@ class EmailsController < ApplicationController
     render json: { hello: "world" }
   end
 
+  def download_pdf
+    email = Email.find(params[:id])
+
+    unless email
+      render json: { error: "Incorrect id." }
+      return
+    end
+
+    begin
+      # create an API client instance
+      client = Pdfcrowd::Client.new("#{ENV['PDFCROWD_USER']}",
+                                    "#{ENV['PDFCROWD_API_KEY']}")
+
+      # convert a web page and store the generated PDF to a variable
+      pdf = client.convertHtml(email.body_html)
+
+      # send the generated PDF
+      send_data(pdf,
+        filename: "kuit-it.pdf",
+        type: "application/pdf",
+        disposition: "attachment")
+      rescue Pdfcrowd::Error => why
+        render text: why
+      end
+  end
+
 end

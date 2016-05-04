@@ -37,6 +37,8 @@ gem 'puma'
 
 gem 'haml'
 
+gem 'pdfcrowd'
+
 group :production do
   gem 'pg'
 end

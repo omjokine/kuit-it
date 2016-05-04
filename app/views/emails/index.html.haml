@@ -8,6 +8,8 @@
       Subject
     %th
       Acual body
+    %th
+      Actions
 
   - @emails.each do |email|
     %tr
@@ -19,3 +21,6 @@
         = email.subject
       %td
         = email.actual_body
+      %td
+        %a{href: download_pdf_email_path(email)}
+          Download as pdf
