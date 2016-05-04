@@ -3,6 +3,10 @@ class EmailsController < ApplicationController
   # Disable CSRF protection
   skip_before_action :verify_authenticity_token
 
+  def index
+    @emails = Email.all
+  end
+
   def create
     # process various message parameters:
     sender  = params['from']

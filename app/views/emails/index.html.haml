@@ -1,0 +1,21 @@
+%table
+  %tr
+    %th
+      Sender
+    %th
+      Receiver
+    %th
+      Subject
+    %th
+      Actual body
+
+  - @emails.each do |email|
+    %tr
+      %td
+        = email.sender
+      %td
+        = email.receiver
+      %td
+        = email.subject
+      %td
+        = email.actual_body
