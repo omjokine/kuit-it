@@ -35,6 +35,8 @@ gem 'rails_12factor'
 
 gem 'puma'
 
+gem 'haml'
+
 group :production do
   gem 'pg'
 end
