@@ -53,7 +53,7 @@ class EmailsController < ApplicationController
                                     "#{ENV['PDFCROWD_API_KEY']}")
 
       # convert a web page and store the generated PDF to a variable
-      pdf = client.convertHtml(email.body_html)
+      pdf = client.convertHtml(strip_out_mozilla_forward_headers(email.body_html))
 
       # send the generated PDF
       send_data(pdf,
@@ -63,6 +63,14 @@ class EmailsController < ApplicationController
       rescue Pdfcrowd::Error => why
         render text: why
       end
+  end
+
+  private
+
+  def strip_out_mozilla_forward_headers html
+    html_to_be_stripped_out = html[/(moz-forward-container\">)(.*)(<meta)/m, 2]
+    return html unless html_to_be_stripped_out
+    html.gsub(html_to_be_stripped_out, "")
   end
 
 end
