@@ -2,4 +2,5 @@
   o hai
   <br />
 
-= link_to('Emails', emails_path)
+- if current_user
+  = link_to('Emails', emails_path)

@@ -6,7 +6,8 @@ class EmailsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @emails = Email.all
+    user_address = "#{current_user.username}#{ENV['EMAIL_DOMAIN']}"
+    @emails = Email.where("lower(receiver) = ?", user_address.downcase)
   end
 
   def create

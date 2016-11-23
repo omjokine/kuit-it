@@ -8,7 +8,8 @@ class User < ApplicationRecord
     presence: true,
     uniqueness: {
       case_sensitive: false
-    } # etc.
+    },
+    length: { minimum: 3 }
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
