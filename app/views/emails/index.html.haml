@@ -1,26 +1,29 @@
-%table
-  %tr
-    %th
-      Sender
-    %th
-      Receiver
-    %th
-      Subject
-    %th
-      Acual body
-    %th
-      Actions
-
-  - @emails.each do |email|
+%p
+  %table
     %tr
-      %td
-        = email.sender
-      %td
-        = email.receiver
-      %td
-        = email.subject
-      %td
-        = email.actual_body
-      %td
-        %a{href: download_pdf_email_path(email)}
-          Download as pdf
+      %th
+        Sender
+      %th
+        Receiver
+      %th
+        Subject
+      %th
+        Acual body
+      %th
+        Actions
+
+    - @emails.each do |email|
+      %tr
+        %td
+          = email.sender
+        %td
+          = email.receiver
+        %td
+          = email.subject
+        %td
+          = email.actual_body
+        %td
+          %a{href: download_pdf_email_path(email)}
+            Download as pdf
+
+= link_to 'Back to home', root_path

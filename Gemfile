@@ -39,6 +39,8 @@ gem 'haml'
 
 gem 'pdfcrowd'
 
+gem 'devise'
+
 group :production do
   gem 'pg'
 end

@@ -1,5 +1,7 @@
 class EmailsController < ApplicationController
 
+  before_action :authenticate_user!
+
   # Disable CSRF protection
   skip_before_action :verify_authenticity_token
 

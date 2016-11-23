@@ -1,0 +1,4 @@
+- attachmentit -> s3 (carrierwave + fog)
+- "content-id-map"=>"{\"<part1.04060802.06030207@kuit.it>\": \"attachment-1\"}
+  kantaan (attachment-1 -> url)
+- email.body_html: search&replace content-id-map.key -> url
