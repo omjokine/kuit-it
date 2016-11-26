@@ -19,7 +19,7 @@ class EmailsController < ApplicationController
     # get the "stripped" body of the message, i.e. without
     # the quoted part
     actual_body = params["stripped-text"]
-    body_html = params["body-html"]
+    body_html = params["stripped-html"]
 
     # TODO:
     # process all attachments:
@@ -38,6 +38,29 @@ class EmailsController < ApplicationController
     email.body_html = body_html
 
     email.save
+
+    user = User.where("lower(username) = ?", receiver.downcase.split("@")[0].downcase).first
+
+    if user
+      from = SendGrid::Email.new(email: "#{user.username}#{ENV['EMAIL_DOMAIN']}")
+      subject = email.subject
+      to = SendGrid::Email.new(email: user.email)
+      content = SendGrid::Content.new(
+        type: 'text/html',
+        value: strip_out_mozilla_forward_headers(email.body_html)
+      )
+      mail = SendGrid::Mail.new(from, subject, to, content)
+
+      attachment = SendGrid::Attachment.new
+      attachment.content = Base64.encode64(generate_pdf(email.body_html))
+      attachment.type = 'application/pdf'
+      attachment.filename = 'kuit_it.pdf'
+
+      mail.attachments = attachment
+
+      sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+      response = sg.client.mail._('send').post(request_body: mail.to_json)
+    end
 
     render json: { hello: "world" }
   end
