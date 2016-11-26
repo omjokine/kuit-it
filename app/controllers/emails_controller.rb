@@ -63,10 +63,10 @@ class EmailsController < ApplicationController
 
   private
 
-def generate_pdf body
-  # convert a web page and store the generated PDF to a variable
-  WickedPdf.new.pdf_from_string(strip_out_mozilla_forward_headers(body))
-end
+  def generate_pdf body
+    # convert a web page and store the generated PDF to a variable
+    WickedPdf.new.pdf_from_string(strip_out_mozilla_forward_headers(body))
+  end
 
   def strip_out_mozilla_forward_headers html
     html_to_be_stripped_out = html[/(moz-forward-container\">)(.*)(<meta)/m, 2]
