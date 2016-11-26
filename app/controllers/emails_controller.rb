@@ -51,6 +51,13 @@ class EmailsController < ApplicationController
       )
       mail = SendGrid::Mail.new(from, subject, to, content)
 
+      attachment = SendGrid::Attachment.new
+      attachment.content = Base64.encode64(generate_pdf(email.body_html))
+      attachment.type = 'application/pdf'
+      attachment.filename = 'kuit_it.pdf'
+
+      mail.attachments = attachment
+
       sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
       response = sg.client.mail._('send').post(request_body: mail.to_json)
     end
@@ -79,10 +86,10 @@ class EmailsController < ApplicationController
 
   private
 
-def generate_pdf body
-  # convert a web page and store the generated PDF to a variable
-  WickedPdf.new.pdf_from_string(strip_out_mozilla_forward_headers(body))
-end
+  def generate_pdf body
+    # convert a web page and store the generated PDF to a variable
+    WickedPdf.new.pdf_from_string(strip_out_mozilla_forward_headers(body))
+  end
 
   def strip_out_mozilla_forward_headers html
     html_to_be_stripped_out = html[/(moz-forward-container\">)(.*)(<meta)/m, 2]
