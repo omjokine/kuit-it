@@ -51,15 +51,8 @@ class EmailsController < ApplicationController
     end
 
     begin
-      # create an API client instance
-      client = Pdfcrowd::Client.new("#{ENV['PDFCROWD_USER']}",
-                                    "#{ENV['PDFCROWD_API_KEY']}")
-
-      # convert a web page and store the generated PDF to a variable
-      pdf = client.convertHtml(strip_out_mozilla_forward_headers(email.body_html))
-
       # send the generated PDF
-      send_data(pdf,
+      send_data(generate_pdf(email.body_html),
         filename: "kuit-it.pdf",
         type: "application/pdf",
         disposition: "attachment")
@@ -69,6 +62,11 @@ class EmailsController < ApplicationController
   end
 
   private
+
+def generate_pdf body
+  # convert a web page and store the generated PDF to a variable
+  WickedPdf.new.pdf_from_string(strip_out_mozilla_forward_headers(body))
+end
 
   def strip_out_mozilla_forward_headers html
     html_to_be_stripped_out = html[/(moz-forward-container\">)(.*)(<meta)/m, 2]
