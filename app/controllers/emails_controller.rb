@@ -54,7 +54,7 @@ class EmailsController < ApplicationController
       attachment = SendGrid::Attachment.new
       attachment.content = Base64.encode64(generate_pdf(email.body_html))
       attachment.type = 'application/pdf'
-      attachment.filename = 'kuit_it.pdf'
+      attachment.filename = "#{friendly_filename(email.subject)}.pdf"
 
       mail.attachments = attachment
 
@@ -85,6 +85,12 @@ class EmailsController < ApplicationController
   end
 
   private
+
+  def friendly_filename(filename)
+    filename.gsub(/[^\w\s_-]+/, '')
+            .gsub(/(^|\b\s)\s+($|\s?\b)/, '\\1\\2')
+            .gsub(/\s+/, '_')
+  end
 
   def generate_pdf body
     # convert a web page and store the generated PDF to a variable
