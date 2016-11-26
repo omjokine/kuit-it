@@ -43,6 +43,8 @@ gem 'wkhtmltopdf-binary'
 
 gem 'devise'
 
+gem 'sendgrid-ruby'
+
 group :production do
   gem 'pg'
 end
