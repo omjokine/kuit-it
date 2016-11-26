@@ -52,7 +52,7 @@ class EmailsController < ApplicationController
       mail = SendGrid::Mail.new(from, subject, to, content)
 
       attachment = SendGrid::Attachment.new
-      attachment.content = Base64.encode64(generate_pdf(email.body_html))
+      attachment.content = Base64.strict_encode64(generate_pdf(email.body_html))
       attachment.type = 'application/pdf'
       attachment.filename = "#{friendly_filename(email.subject)}.pdf"
 
