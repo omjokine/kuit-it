@@ -38,6 +38,8 @@ gem 'puma'
 gem 'haml'
 
 gem 'pdfcrowd'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 gem 'devise'
 
