@@ -23,7 +23,6 @@
         %td
           = email.actual_body
         %td
-          %a{href: download_pdf_email_path(email)}
-            Download as pdf
+          = link_to "Download as pdf", email_path(email, format: :pdf), 'data-no-turbolink': true
 
 = link_to 'Back to home', root_path

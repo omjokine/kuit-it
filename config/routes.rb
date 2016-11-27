@@ -3,11 +3,7 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  resources :emails, only: [ :create, :index ] do
-    member do
-      get 'download_pdf'
-    end
-  end
+  resources :emails, only: [ :create, :index, :show ]
 
   # for let's encrypt certfication process
   get '/.well-known/acme-challenge/:id' => 'encrypt_requests#letsencrypt'

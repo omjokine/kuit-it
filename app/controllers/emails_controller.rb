@@ -65,7 +65,7 @@ class EmailsController < ApplicationController
     render json: { hello: "world" }
   end
 
-  def download_pdf
+  def show
     email = Email.find(params[:id])
 
     unless email
@@ -73,15 +73,11 @@ class EmailsController < ApplicationController
       return
     end
 
-    begin
-      # send the generated PDF
-      send_data(generate_pdf(email.body_html),
-        filename: "kuit-it.pdf",
-        type: "application/pdf",
-        disposition: "attachment")
-      rescue Pdfcrowd::Error => why
-        render text: why
-      end
+    # send the generated PDF
+    send_data(generate_pdf(email.body_html),
+      filename: "#{friendly_filename(email.subject)}.pdf",
+      type: "application/pdf",
+      disposition: "attachment")
   end
 
   private
